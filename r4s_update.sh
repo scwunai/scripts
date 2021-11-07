@@ -73,7 +73,7 @@ format_choose () {
 download_file () {
     cd ${work_path} && clean_up && days=$(($days+1))
     echo `(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)`
-    wget https://github.com/DHDAXCW/NanoPi-r4s-2021/releases/download/$(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)-Lean${version_num}/sha256sums
+    wget https://github.com/scwunai/NanoPi-r4s-2021/releases/download/$(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)-Lean${version_num}/sha256sums
     exist_judge
 }
 #存在判断
@@ -96,7 +96,7 @@ version_skip () {
     case $skip in
         [yY][eE][sS]|[yY])
             echo -e '\e[92m已确认，开始下载固件\e[0m'
-            wget https://github.com/DHDAXCW/NanoPi-r4s-2021/releases/download/$(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)-Lean${version_num}/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-${format}-sysupgrade.img.gz
+            wget https://github.com/scwunai/NanoPi-r4s-2021/releases/download/$(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)-Lean${version_num}/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-${format}-sysupgrade.img.gz
             ;;
         [nN][oO]|[nN])
             echo -e '\e[91m寻找前一天的固件\e[0m'
