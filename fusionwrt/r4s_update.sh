@@ -10,7 +10,7 @@ check_tmp () {
     if [ $real_mem -ge $mini_mem ]; then 
         work_path=/tmp
     else
-        echo -e '\e[91m您的内存小于2G，暂不支持在线升级\e[0m' && exit;
+        echo -e '\e[91m您的内存小于2G，暂不支持在线升级，请手动卡刷\e[0m' && exit;
     fi
 }
 #工作目录
@@ -28,7 +28,8 @@ version_choose () {
     echo "1 --- Docker_容器版"
     echo "2 --- Stable_稳定版"
     echo "3 --- Formal_正式版"
-    read -p "请输入数字[0-3],回车确认 " version_num
+    echo "4 --- Stable_极简版"
+    read -p "请输入数字[0-4],回车确认 " version_num
     case $version_num in
         0)
             echo -e '\e[91m退出脚本，升级结束\e[0m'
@@ -43,8 +44,11 @@ version_choose () {
         3)
             echo -e '\e[92m已选择Formal_正式版\e[0m'
             ;;
+        4)
+            echo -e '\e[92m已选择Stable_极简版\e[0m'
+            ;;
         *)
-            echo -e '\e[91m非法输入,请输入数字[0-3]\e[0m'
+            echo -e '\e[91m非法输入,请输入数字[0-4]\e[0m'
             version_choose
             ;;
     esac
@@ -83,8 +87,8 @@ repo_set () {
 #寻找固件
 search_file () {
     cd ${work_path} && clean_up && days=$(($days+1))
-    echo `(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)`
-    wget ${repo_url}/download/$(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)-Lean${version_num}/sha256sums
+    #echo `(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)`
+    wget -q ${repo_url}/download/$(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)-Lean${version_num}/sha256sums
     exist_judge
 }
 #存在判断
@@ -97,7 +101,7 @@ exist_judge () {
         echo -e '\e[91m未找到合适固件，脚本退出\e[0m'
         exit;
     else
-        echo -e '\e[91m当前固件不存在，寻找前一天的固件\e[0m'
+        #echo -e '\e[91m当前固件不存在，寻找前一天的固件\e[0m'
         search_file
     fi
 }

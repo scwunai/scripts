@@ -10,7 +10,7 @@ check_tmp () {
     if [ $real_mem -ge $mini_mem ]; then 
         work_path=/tmp
     else
-        echo -e '\e[91m您的内存小于2G，暂不支持在线升级\e[0m' && exit;
+        echo -e '\e[91m您的内存小于2G，暂不支持在线升级，请手动卡刷\e[0m' && exit;
     fi
 }
 #工作目录
@@ -78,13 +78,13 @@ format_choose () {
 #仓库选择
 repo_set () {
     repo_url=https://github.com/DHDAXCW/FusionWRT_x86_x64/releases
-    firmware_id=openwrt-x86-64-generic-squashfs-combined-efi.img
+    firmware_id=openwrt-x86-legacy-generic-squashfs-combined-efi.img
 }
 #寻找固件
 search_file () {
     cd ${work_path} && clean_up && days=$(($days+1))
-    echo `(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)`
-    wget ${repo_url}/download/$(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)-Lean${version_num}/sha256sums
+    #echo `(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)`
+    wget -q ${repo_url}/download/$(date -d "@$(($(busybox date +%s) - 86400*($days-1)))" +%Y.%m.%d)-Lean${version_num}/sha256sums
     exist_judge
 }
 #存在判断
@@ -97,7 +97,7 @@ exist_judge () {
         echo -e '\e[91m未找到合适固件，脚本退出\e[0m'
         exit;
     else
-        echo -e '\e[91m当前固件不存在，寻找前一天的固件\e[0m'
+        #echo -e '\e[91m当前固件不存在，寻找前一天的固件\e[0m'
         search_file
     fi
 }
